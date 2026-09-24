@@ -7,15 +7,31 @@
  * until it is filled in.
  */
 
-const fallbackUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL
-  ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
-  : "http://localhost:3000";
+/**
+ * Canonical site origin. Uses NEXT_PUBLIC_SITE_URL when it holds a valid URL,
+ * otherwise Vercel's production domain, otherwise localhost. Empty or
+ * malformed values are ignored so a blank environment variable can't break
+ * the build.
+ */
+function resolveSiteUrl() {
+  const candidates = [process.env.NEXT_PUBLIC_SITE_URL, process.env.VERCEL_PROJECT_PRODUCTION_URL];
+  for (const candidate of candidates) {
+    const value = candidate?.trim();
+    if (!value) continue;
+    try {
+      return new URL(/^https?:\/\//i.test(value) ? value : `https://${value}`).origin;
+    } catch {
+      // Not a usable URL — try the next option.
+    }
+  }
+  return "http://localhost:3000";
+}
 
 export const site = {
   name: "Crate Construction",
   shortName: "Crate",
   /** Set NEXT_PUBLIC_SITE_URL in production (e.g. https://www.yourdomain.com). */
-  url: (process.env.NEXT_PUBLIC_SITE_URL ?? fallbackUrl).replace(/\/$/, ""),
+  url: resolveSiteUrl(),
   tagline: "We build what lasts.",
   description:
     "Crate Construction provides residential construction, remodeling, renovations, additions, and new-home construction across Dallas and surrounding communities.",
