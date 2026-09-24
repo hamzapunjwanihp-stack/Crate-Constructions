@@ -161,7 +161,7 @@
 
 @utility display-hero {
   font-family: var(--font-display);
-  font-size: clamp(2.75rem, 14vw, 11rem);
+  font-size: clamp(2.5rem, 12.8vw, 11rem);
   font-weight: 600;
   font-stretch: 86%;
   line-height: 0.86;
