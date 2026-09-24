@@ -59,7 +59,12 @@ export function ButtonLink({
           v.fill,
         )}
       />
-      <span className={cn("relative z-10 flex items-center gap-3 transition-colors duration-500", v.hoverText)}>
+      <span
+        className={cn(
+          "relative z-10 flex items-center gap-3 whitespace-nowrap transition-colors duration-500",
+          v.hoverText,
+        )}
+      >
         {children}
         {arrow && <ArrowRight className="transition-transform duration-500 ease-expo group-hover:translate-x-1" />}
       </span>
